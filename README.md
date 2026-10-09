@@ -1,5 +1,7 @@
 # CLERK — Cited Legal Evidence Retrieval & Review Kit
 
+[![ci](https://github.com/ar33s08/clerk/actions/workflows/ci.yml/badge.svg)](https://github.com/ar33s08/clerk/actions/workflows/ci.yml)
+
 **Evidence-locked, citation-grounded QA over litigation corpora — with a
 privilege firewall and a CI eval gate that can block a deploy.**
 
@@ -9,8 +11,10 @@ One unverifiable quote → hard refusal. Privileged material is triaged *before*
 it ever reaches the prompt. Hallucinated citations are not "discouraged by a
 prompt" — they are structurally unable to pass.
 
-> Demo: [link when deployed] · Corpus: 21,910 public court opinions
-> (CourtListener), ingested from the live API
+> Corpus: 34 real court/admin decisions (state appellate opinions & hearing
+> officer orders, PDF-extracted with true page provenance) via the
+> CourtListener search API + 3 adversarial gate probes — all reproducible
+> from the public APIs, zero licensed data.
 
 ## Why this exists
 

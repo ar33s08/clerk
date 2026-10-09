@@ -1,8 +1,9 @@
-"""Layout-aware-ish sentence chunking with provenance (ordinal + page marker).
+"""Chunking with provenance (ordinal + page).
 
-CourtListener text has no pages; we synthesize stable page markers by
-word-count bands so citations always resolve to (doc, marker) pairs that can
-be rendered for a reviewer. For real PDFs, `page` comes from extraction.
+Primary lane (CourtListener PDFs) carries REAL page numbers and chunks never
+cross a page boundary. `chunk_document` is the fallback for page-less text
+(local .txt uploads), synthesizing stable markers by word-count band so
+citations always resolve to (doc, marker) pairs.
 """
 from __future__ import annotations
 

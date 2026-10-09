@@ -35,6 +35,7 @@ the numbers measured, and the README claim is stated as measured, not hoped.
 - Faithfulness judge = same-family model as generator in dev runs → judge
   bias caveat; production router pins a different family.
 - Golden set drawn from the same corpus family as eval docs; questions are
-  human-curated but domain breadth is privilege-procedure-heavy by design.
-- Page markers for API-sourced docs are word-band approximations, not
-  printed pages.
+  candidate-generated but human-filtered (dedupe/format/leak heuristics);
+  domain breadth is privilege-procedure-heavy by design.
+- Page provenance is real (PDF extraction); the word-band fallback applies
+  only to page-less .txt uploads.
