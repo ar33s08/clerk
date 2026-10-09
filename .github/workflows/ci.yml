@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r requirements.txt
+      - name: offline unit tests
+        run: python -m pytest tests/ -q
+        env:
+          CLERK_LLM_BASE_URL: "http://127.0.0.1:1/v1"   # force offline determinism
+
+  eval-gate:
+    # Requires self-hosted runner with corpus + LLM gateway; skipped on public CI
+    # unless secrets are present. This is the deploy blocker: a model swap that
+    # regresses citation precision/recall/faithfulness/refusals fails the build.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.ENABLE_EVAL_GATE == 'true'
+    runs-on: [self-hosted, gpu]
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r requirements.txt
+      - run: python -m clerk.eval --gate
+        env:
+          CLERK_LLM_BASE_URL: ${{ secrets.CLERK_LLM_BASE_URL }}
+          CLERK_LLM_API_KEY: ${{ secrets.CLERK_LLM_API_KEY }}

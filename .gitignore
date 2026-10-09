@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+data/*.db*
+data/pages/
+data/golden.jsonl.candidates
+.pytest_cache/
+tests/_test_data/
+.env

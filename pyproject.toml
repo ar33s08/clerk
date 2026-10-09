@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clerk-evidence"
+version = "0.1.0"
+description = "Cited Legal Evidence Retrieval & Review Kit"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115", "uvicorn>=0.30", "pydantic>=2.7", "httpx>=0.27",
+  "numpy>=1.26", "sentence-transformers>=3.0", "rank_bm25>=0.2", "pypdf>=4.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+include = ["clerk*"]
+
+[project.scripts]
+clerk = "clerk.__main__:main"

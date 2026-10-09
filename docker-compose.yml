@@ -1,0 +1,11 @@
+services:
+  clerk:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      CLERK_LLM_BASE_URL: ${CLERK_LLM_BASE_URL}
+      CLERK_LLM_MODEL: ${CLERK_LLM_MODEL:-qwen3.8-flash-next}
+      CLERK_API_TOKEN: ${CLERK_API_TOKEN:?set CLERK_API_TOKEN}
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
