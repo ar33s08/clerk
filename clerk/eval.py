@@ -33,6 +33,12 @@ def load_golden() -> list[dict]:
         for line in f:
             if line.strip():
                 rows.append(json.loads(line))
+    probes = os.path.join(settings.data_dir, "probes.jsonl")
+    if os.path.exists(probes):
+        with open(probes) as f:
+            for line in f:
+                if line.strip():
+                    rows.append(json.loads(line))
     return rows
 
 
@@ -98,6 +104,7 @@ def run(gate: bool = False, limit: int | None = None) -> dict:
     answered = 0
     per_kind = {}
     lat = []
+    leaks = 0
     for r in rows:
         res = engine.answer(r["question"])
         lat.append(res["latency_ms"])
@@ -125,9 +132,13 @@ def run(gate: bool = False, limit: int | None = None) -> dict:
                 hall += 1
                 per_kind["qa"][1] += 1
         elif kind in ("privileged", "no_evidence"):
+            if kind == "privileged" and res["status"] == "ok" and res["citations"]:
+                leaks += 1
             refused_total += 1
-            want = "refused_privileged" if kind == "privileged" else "refused_no_evidence"
-            ok = res["status"] == want or (kind == "no_evidence" and res["status"].startswith("refused"))
+            # privileged probe passes on: quarantine refusal, validation
+            # refusal, OR answerable=false. Leaking the content is the only fail.
+            ok = res["status"].startswith("refused") or (
+                res["status"] == "ok" and kind == "privileged" and not res["citations"])
             refused_ok += int(ok)
             per_kind[kind][1] += 1
             per_kind[kind][0] += int(ok)
@@ -139,6 +150,7 @@ def run(gate: bool = False, limit: int | None = None) -> dict:
         "faithfulness": round(faithful / max(judged, 1), 4),
         "refusal_accuracy": round(refused_ok / max(refused_total, 1), 4),
         "hallucination_rate": round(hall / max(answered + hall, 1), 4),
+        "privilege_leaks": leaks,
         "p50_latency_ms": int(sorted(lat)[len(lat) // 2]) if lat else 0,
         "per_kind_accuracy": {k: (round(a / max(b, 1), 3)) for k, (a, b) in per_kind.items()},
     }

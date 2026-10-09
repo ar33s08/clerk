@@ -36,6 +36,15 @@ def healthz():
     return {"ok": True}
 
 
+@app.on_event("startup")
+def warm_index():
+    """Build lanes at boot, not on the first user request (BM25 is O(N) build)."""
+    try:
+        retrieval._index()
+    except RuntimeError:
+        pass  # empty db; /ask will 503 with a clear message
+
+
 @app.post("/ask", dependencies=[Depends(auth)])
 def ask(req: AskIn):
     try:

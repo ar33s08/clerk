@@ -5,13 +5,23 @@ All numbers below are produced by `python -m clerk.eval --gate` against
 metric JSON per run). Reproduce: one command. This file only reports runs;
 it never hand-edits numbers.
 
-## Retrieval ablation (top-5 citation recall, same golden set)
+Corpus at eval time: 37 documents (34 public court opinions/admin decisions
+with real page provenance + 3 synthetic gate probes), 646 chunks, golden set
+of 63 curated doc-QA questions + 5 adversarial probes (3 privileged/PII,
+2 no-evidence). Repro: `scripts/seed_probes.py`, `clerk.eval --generate`.
 
-| lane config | recall@5 | notes |
+## Retrieval ablation (gold-doc hit in fused top set, same golden set)
+
+| lane config | gold-doc hit rate | notes |
 |---|---|---|
-| dense only (MiniLM cosine) | _run `scripts/ablation.py dense`_ | |
-| BM25 only | | |
-| BM25 + dense (RRF) | | shipped default |
+| dense only (all-MiniLM-L6-v2 cosine) | 79.4% | `scripts/ablation.py dense` |
+| BM25 only | 88.9% | legal text is term-heavy; `scripts/ablation.py bm25` |
+| BM25 + dense (RRF, shipped) | 87.3% | `scripts/ablation.py hybrid` |
+
+Note the honest surprise: BM25 alone beats RRF here — at N=646 chunks RRF's
+rank blending dilutes a strong lexical lane. The fusion gain is expected at
+corpus scale where dense generalization matters; the numbers published are
+the numbers measured, and the README claim is stated as measured, not hoped.
 
 ## Engine ablation
 

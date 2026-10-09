@@ -29,8 +29,10 @@ _SURFACE = {
     ],
     "pii": [
         r"\b\d{3}-\d{2}-\d{4}\b",                       # SSN
+        r"social security numbe",                       # spelled-out SSN
+        r"account\s*number\s*[:.]?\s*\d",               # account numbers
+        r"\b(?:card|cardholder|credit card)\s*(?:no|number)\b",
         r"\b\d{2}/\d{2}/\d{4}\b(?=.*\b(?:DOB|date of birth)\b)",
-        r"\b(?:account|card)\s*(?:no|number)[:.]?\s*\d[\d \-]{8,}",
     ],
 }
 _SURFACE_RE = {k: [re.compile(p, re.I) for p in v] for k, v in _SURFACE.items()}
@@ -154,11 +156,14 @@ def _screen_uncached(text: str) -> dict:
     if not need:
         return {"label": "none", "score": 0.0, "route": "pass"}
     suspects = _suspects(text)
-    # stage 1.5: embedding zero-shot — resolves the confident cases at ~0 cost
+    # stage 1.5: embedding zero-shot — resolves the confident cases at ~0 cost.
+    # Decision is MARGIN-based, not absolute-score: MiniLM cosines top out ~0.5
+    # and are not calibrated 0-1 confidences; the relative rank IS the signal.
+    # Fail-closed: any decided protective label quarantines.
     try:
         label, conf, decided = stage1_5_zero_shot(text, suspects)
         if decided:
-            if label != "none" and conf >= settings.privilege_threshold:
+            if label != "none":
                 return {"label": label, "score": conf, "route": "human_review", "lane": "zero-shot"}
             return {"label": "none", "score": conf, "route": "pass", "lane": "zero-shot"}
     except Exception:
