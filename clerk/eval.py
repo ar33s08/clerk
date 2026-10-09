@@ -59,7 +59,7 @@ def generate_candidates(per_doc_questions: int = 2, max_docs: int = 40) -> None:
                  "and must require quoting specifics (holdings, standards, parties, dates). "
                  'JSON: {"questions": ["...", ...]}'},
                 {"role": "user", "content": d["text"][:6000]},
-            ], max_tokens=200)
+            ], max_tokens=1200)
             for q in out.get("questions", [])[:per_doc_questions]:
                 rows.append({"question": q, "gold_doc_ids": [d["doc_id"]],
                              "gold_chunk_ids": [d["chunk_id"]], "kind": "qa"})
@@ -81,7 +81,7 @@ def _judge_faithful(sentence: str, quote: str) -> bool:
              'Does the CLAIM follow from the EVIDENCE? JSON {"entails": bool}. '
              "If evidence is insufficient or contradicts, entails=false."},
             {"role": "user", "content": f"CLAIM: {sentence}\nEVIDENCE: {quote}"},
-        ], max_tokens=30)
+        ], max_tokens=600)
         return bool(out.get("entails"))
     except Exception:
         return False

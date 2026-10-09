@@ -39,6 +39,10 @@ def chat(messages: list[dict], temperature: float = 0.0, max_tokens: int = 900,
         "temperature": temperature,
         "max_tokens": max_tokens,
     }
+    if settings.llm_disable_thinking:
+        # hybrid-thinking servers (vLLM): reasoning tokens otherwise eat
+        # max_tokens and add 30-60s of latency to structured tasks
+        payload["chat_template_kwargs"] = {"enable_thinking": False}
     if json_mode:
         payload["response_format"] = {"type": "json_object"}
     headers = {"Content-Type": "application/json"}
@@ -56,11 +60,19 @@ def chat(messages: list[dict], temperature: float = 0.0, max_tokens: int = 900,
     _last_usage["prompt_tokens"] += u.get("prompt_tokens", 0)
     _last_usage["completion_tokens"] += u.get("completion_tokens", 0)
     _last_usage["calls"] += 1
-    return j["choices"][0]["message"]["content"]
+    msg = j["choices"][0]["message"]
+    content = msg.get("content")
+    if content is None:
+        # reasoning models: JSON often lands in reasoning_content when
+        # max_tokens truncates before the visible answer
+        content = msg.get("reasoning_content") or ""
+        _last_usage.setdefault("truncated", 0)
+        _last_usage["truncated"] += 1
+    return content
 
 
-def chat_json(messages: list[dict], **kw):
-    txt = chat(messages, json_mode=True, **kw)
+def chat_json(messages: list[dict], max_tokens: int = 1500, **kw):
+    txt = chat(messages, json_mode=True, max_tokens=max_tokens, **kw)
     try:
         return json.loads(txt)
     except json.JSONDecodeError:

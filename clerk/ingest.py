@@ -53,7 +53,10 @@ _CL_TAG_RE = re.compile(r"<[^>]+>")
 
 
 def fetch_courtlistener(query: str, max_docs: int = 100, min_words: int = 1500) -> list[dict]:
-    """Pull full opinion text for top results of a query, paginated."""
+    """Search CourtListener, then pull the source PDF (hosted by the issuing
+    court) so chunks carry REAL page numbers. Falls back to cluster plain_text
+    is not possible anonymously (v4 clusters require auth), so PDF is the lane.
+    """
     docs: list[dict] = []
     seen: set[str] = set()
     page = 1
@@ -65,26 +68,30 @@ def fetch_courtlistener(query: str, max_docs: int = 100, min_words: int = 1500) 
         )
         try:
             j = json.loads(_get(url))
-        except Exception as e:  # rate limited / transient
-            print(f"  CL page {page} failed: {e}; sleeping 60s")
-            time.sleep(60)
-            continue
+        except Exception as e:
+            print(f"  CL search page {page} failed: {e}")
+            break
         hits = j.get("results", [])
         if not hits:
             break
         for h in hits:
             if len(docs) >= max_docs:
                 break
-            # fetch the opinion cluster to get clean text
-            try:
-                cluster = json.loads(_get(h["cluster"]))
-            except Exception:
+            durl = ""
+            for op in h.get("opinions") or []:
+                if op.get("download_url"):
+                    durl = op["download_url"]
+                    break
+            if not durl:
                 continue
-            if (cluster.get("plain_text") or "").strip():
-                body = cluster["plain_text"]
-            else:
-                body = _CL_TAG_RE.sub(" ", cluster.get("html_with_citations") or cluster.get("html") or "")
-            body = re.sub(r"\s+", " ", body).strip()
+            title = re.sub(r"<[^>]+>", "", h.get("caseName") or "untitled").strip()
+            try:
+                pages = _pdf_pages(_get(durl))
+            except Exception as e:
+                print(f"  pdf failed {title[:40]}: {str(e)[:60]}")
+                continue
+            pages = [re.sub(r"\s+", " ", p).strip() for p in pages]
+            body = " ".join(pages)
             if len(body.split()) < min_words:
                 continue
             key = _sha(body)
@@ -92,16 +99,23 @@ def fetch_courtlistener(query: str, max_docs: int = 100, min_words: int = 1500) 
                 continue
             seen.add(key)
             docs.append({
-                "doc_id": key,
-                "source": "courtlistener",
-                "source_url": "https://www.courtlistener.com" + (cluster.get("absolute_url") or ""),
-                "title": re.sub(r"<[^>]+>", "", h.get("caseName") or "untitled").strip(),
-                "doc_date": (cluster.get("date_filed") or h.get("dateFiled") or "")[:10],
+                "doc_id": key, "source": "courtlistener",
+                "source_url": "https://www.courtlistener.com" + (h.get("absolute_url") or ""),
+                "title": title, "doc_date": (h.get("dateFiled") or "")[:10],
                 "text": body,
-                "meta": {"court": cluster.get("court"), "docket": cluster.get("docket_number")},
+                "pages": [{"page": n + 1, "text": t} for n, t in enumerate(pages) if t],
+                "meta": {"court": h.get("court"), "docket": h.get("docketNumber"),
+                         "citation": (h.get("citation") or [""])[0], "pdf_url": durl},
             })
         page += 1
     return docs
+
+
+def _pdf_pages(blob: bytes) -> list[str]:
+    import io
+    from pypdf import PdfReader
+    rd = PdfReader(io.BytesIO(blob))
+    return [(p.extract_text() or "") for p in rd.pages[:80]]
 
 
 # ---------- Lane 2: local files ----------

@@ -17,8 +17,9 @@ from .config import settings
 
 def build(docs: list[dict]) -> dict:
     total_chunks = 0
+    from .chunking import chunk_pages
     for i, d in enumerate(docs):
-        chunks = chunk_document(d["text"])
+        chunks = chunk_pages(d["pages"]) if d.get("pages") else chunk_document(d["text"])
         if not chunks:
             continue
         store.upsert_document(d)

@@ -48,3 +48,28 @@ def chunk_document(text: str, target_words: int = 380, overlap_sentences: int = 
             break
         i = max(i + 1, j - overlap_sentences)          # overlap for boundary recall
     return chunks
+
+
+def chunk_pages(pages: list[dict], target_words: int = 380,
+                overlap_sentences: int = 2) -> list[dict]:
+    """Same sentence-packing but with REAL page numbers (from PDF extraction).
+    Chunks never cross a page boundary, keeping quote provenance exact."""
+    chunks: list[dict] = []
+    ordinal = 0
+    for pg in pages:
+        sents = sentence_split(pg["text"])
+        i, n = 0, len(sents)
+        while i < n:
+            window, words, j = [], 0, i
+            while j < n and words < target_words:
+                window.append(sents[j])
+                words += len(sents[j].split())
+                j += 1
+            body = " ".join(window)
+            chunks.append({"ordinal": ordinal, "page": pg["page"], "text": body,
+                           "n_tokens": len(body.split())})
+            ordinal += 1
+            if j >= n:
+                break
+            i = max(i + 1, j - overlap_sentences)
+    return chunks

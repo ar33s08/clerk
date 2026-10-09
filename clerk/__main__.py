@@ -20,7 +20,7 @@ def main() -> int:
         print("db ready")
     elif a.cmd == "ask":
         r = engine.answer(a.question)
-        print(f"[{r['status']}] {r['answer']}")
+        print(f"[{r['status']}] {r['answer']}" + (f"  (note: {r['note']})" if r.get('note') else ""))
         for c in r["citations"]:
             print(f"  - [{c['doc_id'][:8]} p.{c['page']}] \"{c['quote'][:110]}...\"")
         for b in r["quarantined"]:

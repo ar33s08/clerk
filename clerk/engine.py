@@ -85,7 +85,7 @@ def answer(question: str, k: int | None = None) -> dict:
         out = llm.chat_json([
             {"role": "system", "content": SYSTEM},
             {"role": "user", "content": f"Evidence:\n{ev_text}\n\nQuestion: {question}"},
-        ])
+        ], max_tokens=3000)
     except llm.LLMError:
         return _finish(question, "", "error", [], blocked, t0,
                        note="llm_unavailable")

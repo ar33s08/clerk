@@ -13,7 +13,8 @@ class Settings:
     llm_base_url: str = os.environ.get("CLERK_LLM_BASE_URL", "https://spark-fceb.tail391339.ts.net/v1")
     llm_model: str = os.environ.get("CLERK_LLM_MODEL", "qwen3.8-flash-next")
     llm_api_key: str = os.environ.get("CLERK_LLM_API_KEY", "")
-    llm_timeout_s: float = float(os.environ.get("CLERK_LLM_TIMEOUT_S", "60"))
+    llm_timeout_s: float = float(os.environ.get("CLERK_LLM_TIMEOUT_S", "180"))
+    llm_disable_thinking: bool = os.environ.get("CLERK_LLM_DISABLE_THINKING", "1") == "1"
     # embeddings (CPU-friendly default; swap for bge-m3 / colpali at scale)
     embed_model: str = os.environ.get("CLERK_EMBED_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
     embed_batch: int = 64

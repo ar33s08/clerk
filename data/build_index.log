@@ -1,5 +1,153 @@
 fetching CourtListener: 'attorney client privilege waiver'
-fetching CourtListener: 'work product doctrine litigation'
+  pdf failed State Farm Fire & Cas. Co. v. Griggs: URL can't contain control characters. '/Portals/COBAR/Reposi
+  pdf failed Troubadour Oil & Gas v. Rustad: HTTP Error 404: Not Found
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Masquerade Fundraising Inc. v. Patrick H: Stream has ended unexpectedly
+  pdf failed Untitled California Attorney General Opi: HTTP Error 403: Forbidden
+  pdf failed Untitled California Attorney General Opi: HTTP Error 403: Forbidden
+  pdf failed State Farm Fire & Cas. Co. v. Griggs: URL can't contain control characters. '/Portals/COBAR/Reposi
+  pdf failed Troubadour Oil & Gas v. Rustad: HTTP Error 404: Not Found
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Masquerade Fundraising Inc. v. Patrick H: Stream has ended unexpectedly
+  pdf failed Untitled California Attorney General Opi: HTTP Error 403: Forbidden
+  pdf failed Untitled California Attorney General Opi: HTTP Error 403: Forbidden
+  pdf failed State Farm Fire & Cas. Co. v. Griggs: URL can't contain control characters. '/Portals/COBAR/Reposi
+  pdf failed Troubadour Oil & Gas v. Rustad: HTTP Error 404: Not Found
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Masquerade Fundraising Inc. v. Patrick H: Stream has ended unexpectedly
+  pdf failed Untitled California Attorney General Opi: HTTP Error 403: Forbidden
+  pdf failed Untitled California Attorney General Opi: HTTP Error 403: Forbidden
+  pdf failed State Farm Fire & Cas. Co. v. Griggs: URL can't contain control characters. '/Portals/COBAR/Reposi
+  pdf failed Troubadour Oil & Gas v. Rustad: HTTP Error 404: Not Found
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Masquerade Fundraising Inc. v. Patrick H: Stream has ended unexpectedly
+  pdf failed Untitled California Attorney General Opi: HTTP Error 403: Forbidden
+  pdf failed Untitled California Attorney General Opi: HTTP Error 403: Forbidden
+fetching CourtListener: 'work product doctrine'
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Chris Etters v. Knox County, Tennessee: Stream has ended unexpectedly
+  pdf failed Meagan Rena Work v. State: HTTP Error 404: Not Found
+  pdf failed Meagan Rena Work v. State: HTTP Error 404: Not Found
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Moore Freight Services, Inc. v. Grant Mi: Stream has ended unexpectedly
+  pdf failed Tony's Concrete Work, LLC v. Shelly Goad: Cannot read an empty file
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Chris Etters v. Knox County, Tennessee: Stream has ended unexpectedly
+  pdf failed Meagan Rena Work v. State: HTTP Error 404: Not Found
+  pdf failed Meagan Rena Work v. State: HTTP Error 404: Not Found
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Moore Freight Services, Inc. v. Grant Mi: Stream has ended unexpectedly
+  pdf failed Tony's Concrete Work, LLC v. Shelly Goad: Cannot read an empty file
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Chris Etters v. Knox County, Tennessee: Stream has ended unexpectedly
+  pdf failed Meagan Rena Work v. State: HTTP Error 404: Not Found
+  pdf failed Meagan Rena Work v. State: HTTP Error 404: Not Found
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Moore Freight Services, Inc. v. Grant Mi: Stream has ended unexpectedly
+  pdf failed Tony's Concrete Work, LLC v. Shelly Goad: Cannot read an empty file
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Chris Etters v. Knox County, Tennessee: Stream has ended unexpectedly
+  pdf failed Meagan Rena Work v. State: HTTP Error 404: Not Found
+  pdf failed Meagan Rena Work v. State: HTTP Error 404: Not Found
+invalid pdf header: b'<html'
+EOF marker not found
+  pdf failed Moore Freight Services, Inc. v. Grant Mi: Stream has ended unexpectedly
+  pdf failed Tony's Concrete Work, LLC v. Shelly Goad: Cannot read an empty file
 fetching CourtListener: 'summary judgment standard'
-0 unique documents
-done: {'documents': 0, 'chunks': 0} | db: /Users/areesmanesia/clerk/data/clerk.db
+invalid pdf header: b'<HTML'
+EOF marker not found
+EOF marker not found
+  pdf failed Matter of Adjournment of a Motion for Su: Stream has ended unexpectedly
+invalid pdf header: b'<HTML'
+EOF marker not found
+EOF marker not found
+  pdf failed Matter of Adjournment of a Motion for Su: Stream has ended unexpectedly
+  pdf failed In Re: Enforcement of Philippine Forfeit: HTTP Error 404: Not Found
+  pdf failed Judgment Enforcement, LLC v. King: HTTP Error 404: Not Found
+  pdf failed Ayling v. Sens: HTTP Error 404: Not Found
+  pdf failed Ayling v. Sens: HTTP Error 404: Not Found
+invalid pdf header: b'<HTML'
+EOF marker not found
+EOF marker not found
+  pdf failed Matter of Adjournment of a Motion for Su: Stream has ended unexpectedly
+invalid pdf header: b'<HTML'
+EOF marker not found
+EOF marker not found
+  pdf failed Matter of Adjournment of a Motion for Su: Stream has ended unexpectedly
+  pdf failed In Re: Enforcement of Philippine Forfeit: HTTP Error 404: Not Found
+  pdf failed Judgment Enforcement, LLC v. King: HTTP Error 404: Not Found
+  pdf failed Ayling v. Sens: HTTP Error 404: Not Found
+  pdf failed Ayling v. Sens: HTTP Error 404: Not Found
+invalid pdf header: b'<HTML'
+EOF marker not found
+EOF marker not found
+  pdf failed Matter of Adjournment of a Motion for Su: Stream has ended unexpectedly
+invalid pdf header: b'<HTML'
+EOF marker not found
+EOF marker not found
+  pdf failed Matter of Adjournment of a Motion for Su: Stream has ended unexpectedly
+  pdf failed In Re: Enforcement of Philippine Forfeit: HTTP Error 404: Not Found
+  pdf failed Judgment Enforcement, LLC v. King: HTTP Error 404: Not Found
+  pdf failed Ayling v. Sens: HTTP Error 404: Not Found
+  pdf failed Ayling v. Sens: HTTP Error 404: Not Found
+invalid pdf header: b'<HTML'
+EOF marker not found
+EOF marker not found
+  pdf failed Matter of Adjournment of a Motion for Su: Stream has ended unexpectedly
+invalid pdf header: b'<HTML'
+EOF marker not found
+EOF marker not found
+  pdf failed Matter of Adjournment of a Motion for Su: Stream has ended unexpectedly
+  pdf failed In Re: Enforcement of Philippine Forfeit: HTTP Error 404: Not Found
+  pdf failed Judgment Enforcement, LLC v. King: HTTP Error 404: Not Found
+  pdf failed Ayling v. Sens: HTTP Error 404: Not Found
+  pdf failed Ayling v. Sens: HTTP Error 404: Not Found
+34 unique documents
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 6871.86it/s]
+[1/34] Hudson v. Greater Cleveland Regional Transit Auth. -> 13 chunks
+[2/34] Hicks v. Union Twp., Clermont Cty., Trustees -> 16 chunks
+[3/34] Smith v. Ohio State Univ. Office of Compliance & Integrity -> 35 chunks
+[4/34] In re Daniel Cragg, Dalvin Cook v. Gracelyn Trimble, Daniel  -> 21 chunks
+[5/34] Evans v. Gardner -> 11 chunks
+[6/34] Auth v. Indus. Physical Capability Servs., Inc. -> 9 chunks
+[7/34] State v. Hoover -> 21 chunks
+[8/34] Assertion of Executive Privilege Over Deliberative Materials -> 16 chunks
+[9/34] Barrett v. Wagenbrenner -> 16 chunks
+[10/34] Smith v. Technology House, Ltd. -> 17 chunks
+[11/34] Edwards v. Edwards -> 11 chunks
+[12/34] Fiani v. Worldpay, L.L.C. -> 19 chunks
+[13/34] State ex rel. Ohio Academy of Nursing Homes, Inc. v. Ohio De -> 40 chunks
+[14/34] State v. Brunson -> 38 chunks
+[15/34] In re Hasenfratz -> 7 chunks
+[16/34] Dye v. Cleveland -> 20 chunks
+[17/34] Eddy v. Farmers Property Cas. Ins. Co. -> 23 chunks
+[18/34] DMS Constr. Ents., L.L.C. v. Homick -> 39 chunks
+[19/34] State of Iowa v. Benjamin James Work -> 16 chunks
+[20/34] Holland v. Dayton Children's Hosp. -> 21 chunks
+[21/34] Product Solutions Int'l, Inc. v. Aldez Containers, LLC -> 10 chunks
+[22/34] Atlas Brew Work, LLC v. Whitaker -> 29 chunks
+[23/34] Burton Corp. Site Work Approval - Decision on Motions -> 40 chunks
+[24/34] Duval CU Denial - Decision on Motion (Summary Judgment) -> 12 chunks
+[25/34] 83 North Willard Street CU - Decision on Motion (Summary Jud -> 7 chunks
+[26/34] All Star Group, LLC Subdivision Permit Denial - Decision on  -> 20 chunks
+[27/34] Appeals fo Valsangiacomo (Decision and Order on Motion for S -> 11 chunks
+[28/34] State v. Calhoun -> 9 chunks
+[29/34] Best Motors, L.L.C. v. Kaba -> 37 chunks
+[30/34] Appeal of Harrison (Decision and Order on Appellants' Motion -> 8 chunks
+[31/34] Zelaya/Capital International Judgment, LLC v. John Zelaya -> 22 chunks
+[32/34] Appeal of Spaulding (Decision and Order on Cross-Motions for -> 9 chunks
+[33/34] In re: Appeal of Jacques Tremblay (Decision and Order on Mot -> 6 chunks
+[34/34] Appeals of Wesco, Inc. (Decision and Order on Cross-Motions  -> 13 chunks
+done: {'documents': 34, 'chunks': 642} | db: /Users/areesmanesia/clerk/data/clerk.db
