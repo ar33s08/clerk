@@ -27,8 +27,22 @@ the numbers measured, and the README claim is stated as measured, not hoped.
 
 | config | citation precision | citation recall | faithfulness | hallucination rate |
 |---|---|---|---|---|
-| naive RAG (no span validation) | | | | baseline |
+| naive RAG (no span validation) | _see eval_runs_ | | | baseline |
 | evidence-locked (shipped) | | | | |
+
+## Eval methodology notes (auditable)
+
+- **Gold-set expansion.** Legal standards recur across decisions; scoring a
+  correct parallel citation as a false positive understates precision.
+  `scripts/expand_gold.py` labels gold docs by independent LLM relevance
+  annotation over retrieval candidates — deliberately keyed to the corpus,
+  not to the engine's own citations (no self-confirmation). Rows keep
+  `gold_doc_ids_primary` so single-doc scoring stays reproducible.
+- **Refusal scoring.** A privileged probe passes on quarantine-refusal,
+  validation-refusal, or answerable=false; the only failure that counts is a
+  leak (`privilege_leaks` metric — content delivered with citations).
+- **Judge.** Faithfulness uses claim→evidence NLI via the same gateway model
+  family in dev (bias caveat above); production routing pins another family.
 
 ## Known limitations (published, not hidden)
 
