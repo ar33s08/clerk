@@ -1,2 +1,21 @@
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
 Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 9221.99it/s]
+{
+  "n": 68,
+  "answered": 47,
+  "citation_precision": 0.8313,
+  "citation_recall": 0.8936,
+  "faithfulness": 0.9518,
+  "refusal_accuracy": 1.0,
+  "hallucination_rate": 0.0962,
+  "privilege_leaks": 0,
+  "p50_latency_ms": 10099,
+  "per_kind_accuracy": {
+    "qa": 0.808,
+    "privileged": 1.0,
+    "no_evidence": 1.0
+  },
+  "passed": false
+}
+
+EVAL GATE: n/a (not gating)

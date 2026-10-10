@@ -23,12 +23,28 @@ rank blending dilutes a strong lexical lane. The fusion gain is expected at
 corpus scale where dense generalization matters; the numbers published are
 the numbers measured, and the README claim is stated as measured, not hoped.
 
-## Engine ablation
+## Engine results (golden set, vLLM qwen3.8-flash-next, 2026-10-09)
 
-| config | citation precision | citation recall | faithfulness | hallucination rate |
-|---|---|---|---|---|
-| naive RAG (no span validation) | _see eval_runs_ | | | baseline |
-| evidence-locked (shipped) | | | | |
+| run | precision | recall | faithfulness | refusal acc | halluc. rate* | leaks |
+|---|---|---|---|---|---|---|
+| run 1 (initial gate) | 0.777 | 0.837 | 0.965 | **0.40** | 7.6% | (untracked) |
+| run 2 (margin-based zero-shot lane) | 0.788 | 0.837 | 0.953 | **1.00** | 7.6% | 0 |
+| run 3 (+ gold-set annotation) | 0.831 | 0.894 | 0.952 | 1.00 | 9.6% | 0 |
+
+\* share of answers the span validator REJECTED — under the evidence lock
+these become refusals, never silent wrong answers. The refusal-cost trade is
+the project's central design statement.
+
+**Gate status: FAIL on precision (0.831 < 0.90) — published, not hidden.**
+Recall/faithfulness/refusal gates pass. Residual precision errors are the
+generator citing a *parallel* decision whose quoted span genuinely supports
+part of the answer but isn't the annotated primary; the annotation pass
+(run 2→3: 0.788→0.831) closed most, the rest need per-sentence gold spans
+(next milestone: chunk-level gold labels).
+
+| naive RAG baseline (validation OFF) | bad-quote rate | rows affected |
+|---|---|---|
+| same retrieval + generator | _pending: scripts/naive_baseline.py_ | |
 
 ## Eval methodology notes (auditable)
 
