@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS queries (
     latency_ms  INTEGER,
     prompt_tokens INTEGER,
     completion_tokens INTEGER,
+    cost_usd    REAL DEFAULT 0,
     created_at  TEXT DEFAULT (datetime('now'))
 );
 CREATE TABLE IF NOT EXISTS quarantine (
@@ -77,6 +78,10 @@ def init_db(path: str | None = None) -> None:
     os.makedirs(os.path.dirname(target), exist_ok=True)
     with _conn(target) as c:
         c.executescript(_SCHEMA)
+        # additive migrations (SQLite: ALTER is cheap, guarded by column probe)
+        cols = {r["name"] for r in c.execute("PRAGMA table_info(queries)")}
+        if "cost_usd" not in cols:
+            c.execute("ALTER TABLE queries ADD COLUMN cost_usd REAL DEFAULT 0")
 
 
 @contextmanager
@@ -141,14 +146,16 @@ def doc_meta(doc_id: str) -> dict | None:
     return dict(r) if r else None
 
 
-def log_query(question, answer, status, citations, latency_ms, ptok, ctok) -> int:
+def log_query(question, answer, status, citations, latency_ms, ptok, ctok,
+              cost_usd: float = 0.0) -> int:
     with _conn() as c:
         cur = c.execute(
-            "INSERT INTO queries (question, answer, status, citations, latency_ms, prompt_tokens, completion_tokens) "
-            "VALUES (?,?,?,?,?,?,?)",
-            (question, answer, status, json.dumps(citations), latency_ms, ptok, ctok),
+            "INSERT INTO queries (question, answer, status, citations, latency_ms, "
+            "prompt_tokens, completion_tokens, cost_usd) VALUES (?,?,?,?,?,?,?,?)",
+            (question, answer, status, json.dumps(citations), latency_ms, ptok, ctok,
+             cost_usd),
         )
-        return cur.lastrowid
+        return int(cur.lastrowid or 0)
 
 
 def log_quarantine(chunk_id, doc_id, label, score, route) -> None:
@@ -163,7 +170,7 @@ def log_eval_run(git_sha, metrics: dict, passed: bool) -> int:
     with _conn() as c:
         cur = c.execute("INSERT INTO eval_runs (git_sha, metrics, passed) VALUES (?,?,?)",
                         (git_sha, json.dumps(metrics), int(passed)))
-        return cur.lastrowid
+        return int(cur.lastrowid or 0)
 
 
 def stats() -> dict:
@@ -175,4 +182,7 @@ def stats() -> dict:
             "queries": q("SELECT COUNT(*) FROM queries"),
             "quarantined": q("SELECT COUNT(*) FROM quarantine WHERE route='human_review'"),
             "eval_runs": q("SELECT COUNT(*) FROM eval_runs"),
+            "total_cost_usd": round(q("SELECT COALESCE(SUM(cost_usd),0) FROM queries"), 4),
+            "status_counts": {r["status"]: r["c"] for r in c.execute(
+                "SELECT status, COUNT(*) c FROM queries GROUP BY status")},
         }

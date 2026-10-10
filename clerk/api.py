@@ -6,6 +6,7 @@ data routes; /healthz stays open for probes).
 from __future__ import annotations
 
 import os
+from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, Header, HTTPException
 from pydantic import BaseModel, Field
@@ -13,7 +14,17 @@ from pydantic import BaseModel, Field
 from . import engine, retrieval, store
 from .config import settings
 
-app = FastAPI(title="CLERK", version="0.1.0",
+@asynccontextmanager
+async def lifespan(_app):
+    """Build lanes at boot, not on the first user request (BM25 is O(N) build)."""
+    try:
+        retrieval._index()
+    except RuntimeError:
+        pass  # empty db; /ask will 503 with a clear message
+    yield
+
+
+app = FastAPI(title="CLERK", version="0.1.0", lifespan=lifespan,
               description="Cited Legal Evidence Retrieval & Review Kit")
 
 _TOKEN = os.environ.get("CLERK_API_TOKEN", "")
@@ -34,15 +45,6 @@ class AskIn(BaseModel):
 @app.get("/healthz")
 def healthz():
     return {"ok": True}
-
-
-@app.on_event("startup")
-def warm_index():
-    """Build lanes at boot, not on the first user request (BM25 is O(N) build)."""
-    try:
-        retrieval._index()
-    except RuntimeError:
-        pass  # empty db; /ask will 503 with a clear message
 
 
 @app.post("/ask", dependencies=[Depends(auth)])

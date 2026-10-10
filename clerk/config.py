@@ -20,6 +20,12 @@ class Settings:
     embed_batch: int = 64
     # visual document retrieval lane (page thumbnails; pluggable encoder)
     vdr_enabled: bool = os.environ.get("CLERK_VDR", "0") == "1"
+    # cost accounting (USD per 1M tokens; self-hosted vLLM => set to your
+    # energy/capacity amortization, defaults are conservative API parity)
+    price_in_per_mtok: float = float(os.environ.get("CLERK_PRICE_IN", "0.60"))
+    price_out_per_mtok: float = float(os.environ.get("CLERK_PRICE_OUT", "2.40"))
+    # LLM rerank lane (opt-in: adds 1 call per query, ~+2s)
+    rerank: bool = os.environ.get("CLERK_RERANK", "0") == "1"
     # retrieval knobs
     top_k_per_lane: int = 25
     rrf_k: int = 60

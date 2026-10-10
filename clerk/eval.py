@@ -105,9 +105,11 @@ def run(gate: bool = False, limit: int | None = None) -> dict:
     per_kind = {}
     lat = []
     leaks = 0
+    cost_total = 0.0
     for r in rows:
         res = engine.answer(r["question"])
         lat.append(res["latency_ms"])
+        cost_total += res.get("cost_usd", 0.0)
         kind = r.get("kind", "qa")
         per_kind.setdefault(kind, [0, 0])
         if kind == "qa":
@@ -152,6 +154,8 @@ def run(gate: bool = False, limit: int | None = None) -> dict:
         "hallucination_rate": round(hall / max(answered + hall, 1), 4),
         "privilege_leaks": leaks,
         "p50_latency_ms": int(sorted(lat)[len(lat) // 2]) if lat else 0,
+        "cost_usd_total": round(cost_total, 4),
+        "cost_usd_per_query": round(cost_total / max(len(rows), 1), 5),
         "per_kind_accuracy": {k: (round(a / max(b, 1), 3)) for k, (a, b) in per_kind.items()},
     }
     passed = (m["citation_precision"] >= settings.gate_citation_precision

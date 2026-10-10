@@ -16,6 +16,7 @@ import re
 import time
 
 from . import llm, privilege, retrieval, store
+from .config import settings
 
 SYSTEM = (
     "You are CLERK, a legal evidence analyst. Rules:\n"
@@ -113,8 +114,11 @@ def answer(question: str, k: int | None = None) -> dict:
 
 def _finish(question, ans, status, cites, blocked, t0, note=None) -> dict:
     u = llm.usage()
+    cost = (u["prompt_tokens"] * settings.price_in_per_mtok
+            + u["completion_tokens"] * settings.price_out_per_mtok) / 1e6
     qid = store.log_query(question, ans, status, cites, int((time.time() - t0) * 1000),
-                           u["prompt_tokens"], u["completion_tokens"])
+                          u["prompt_tokens"], u["completion_tokens"], cost)
     return {"qid": qid, "status": status, "answer": ans, "citations": cites,
             "quarantined": blocked, "note": note,
-            "latency_ms": int((time.time() - t0) * 1000), "tokens": u}
+            "latency_ms": int((time.time() - t0) * 1000), "tokens": u,
+            "cost_usd": round(cost, 6)}

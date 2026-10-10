@@ -84,13 +84,35 @@ def rrf_fuse(lanes: list[list[tuple[int, float]]], k: int, rrf_k: int) -> list[i
     return [cid for cid, _ in sorted(votes.items(), key=lambda x: -x[1])[:k]]
 
 
+def llm_rerank(question: str, rows: list[dict], k: int) -> list[dict]:
+    """Pointwise relevance rerank (HF text-ranking task via LLM judge).
+    Cheap variant: single batch call ranking candidate ids 0-1."""
+    if not rows or len(rows) <= k:
+        return rows
+    from . import llm
+    listing = "\n\n".join(
+        f"[{i}] {r['text'][:220]}" for i, r in enumerate(rows))
+    try:
+        out = llm.chat_json([
+            {"role": "system", "content":
+             'Rank candidates for answering the question. Return JSON '
+             '{"ranking": [i, ...]} best-first, all indices included.'},
+            {"role": "user", "content": f"Q: {question}\n\n{listing}"},
+        ], max_tokens=300)
+        order = [int(i) for i in out.get("ranking", []) if 0 <= int(i) < len(rows)]
+    except Exception:
+        return rows
+    order += [i for i in range(len(rows)) if i not in set(order)]
+    return [rows[i] for i in order]
+
+
 def retrieve(question: str, k: int | None = None, exclude_chunks: set[int] | None = None) -> list[dict]:
     """Returns top-k chunk dicts, privilege-quarantined chunks excluded."""
     k = k or settings.final_k
     idx = _index()
     lanes = [idx.lexical(question, settings.top_k_per_lane),
              idx.dense(embed_query(question), settings.top_k_per_lane)]
-    cids = rrf_fuse(lanes, k * 3, settings.rrf_k)
+    cids = rrf_fuse(lanes, k * 4, settings.rrf_k)
     if exclude_chunks:
         cids = [c for c in cids if c not in exclude_chunks]
     out = []
@@ -98,9 +120,9 @@ def retrieve(question: str, k: int | None = None, exclude_chunks: set[int] | Non
         row = store.chunk_by_id(cid)
         if row:
             out.append(row)
-        if len(out) >= k:
-            break
-    return out
+    if settings.rerank:
+        out = llm_rerank(question, out, k)
+    return out[:k]
 
 
 _index_cache = None

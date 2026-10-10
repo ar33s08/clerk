@@ -89,14 +89,16 @@ python -m venv .venv && .venv/bin/pip install -r requirements.txt
 uvicorn clerk.api:app                                   # or: docker compose up
 ```
 
-Env: `CLERK_LLM_BASE_URL` (any OpenAI-compatible endpoint — dev box runs
-vLLM on a DGX Spark), `CLERK_LLM_MODEL`, `CLERK_API_TOKEN`,
-`CLERK_EMBED_MODEL`.
+Env: see [`.env.example`](.env.example) — key ones: `CLERK_LLM_BASE_URL`
+(any OpenAI-compatible endpoint; dev box runs vLLM on a DGX Spark),
+`CLERK_API_TOKEN` (fail-closed: unset ⇒ API refuses), `CLERK_RERANK=1`
+(opt-in LLM rerank lane), `CLERK_PRICE_IN/OUT` (cost accounting per query,
+surfaced in `/stats` and eval output).
 
 ## Scale path (documented, not vaporware)
 
 - SQLite+numpy scan → Postgres+pgvector/HNSW (schema is 1:1; `store.py` is
-  the only module that knows SQL)
+  the only module that knows SQL; additive-column migrations already in place)
 - in-process BM25 → OpenSearch hybrid with RRF at the coordinator
 - single FastAPI worker → queue-backed ingest (documents are content-addressed,
   so ingestion is idempotent and parallel)
