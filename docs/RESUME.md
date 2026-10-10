@@ -10,8 +10,9 @@ guess; the harness produces them):
 
 - Built an evidence-locked RAG system over a 37-document public court corpus
   (646 chunks, real PDF page provenance); server-side verbatim-span
-  validation converts ~10% of would-be hallucinated answers into safe
-  refusals on a 68-case eval set — 0 unsupported answers shipped silently.
+  validation makes hallucinated citations structurally impossible to pass
+  silently — 9.6% of would-be answers rejected to refusal rather than
+  shipped unverified (DB logs: 13 blocked across eval runs).
 - Designed a 3-stage privilege/PII gate (lexical screen → embedding
   zero-shot → LLM arbiter, fail-closed on outage) reaching 100% refusal
   accuracy on adversarial probes after the eval harness caught one real

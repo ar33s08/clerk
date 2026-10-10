@@ -42,9 +42,25 @@ part of the answer but isn't the annotated primary; the annotation pass
 (run 2→3: 0.788→0.831) closed most, the rest need per-sentence gold spans
 (next milestone: chunk-level gold labels).
 
-| naive RAG baseline (validation OFF) | bad-quote rate | rows affected |
-|---|---|---|
-| same retrieval + generator | _pending: scripts/naive_baseline.py_ | |
+### Naive baseline (validation OFF, same generator) — the honest surprise
+
+`scripts/naive_baseline.py`: 49 answered, **0.0% bad quotes**. Re-run of the
+same questions inside the locked pipeline rejected 5 of 52 in run 3 (9.6%;
+13 blocked across all runs in the query log). Same model,
+same temperature — so the divergence is the *evidence set*, not the model's
+manners: the privilege gate removes/renumbers chunks, and quote fidelity is
+composition-sensitive. Two takeaways we actually ship with:
+
+1. For a strong instruct model on extractive tasks at temp 0, the span lock
+   costs little in refusals on clean evidence (0 bad quotes when the right
+   chunks lead) and pays off exactly when it doesn't (9.6% rejected under
+   gate-shifted evidence — each one would have shipped silently in naive
+   RAG).
+2. The honest claim is NOT "validation eliminates hallucination" — it is
+   "validation makes hallucination *visible and blocking*." The validator's
+   13 rejections are either true hallucinations or false rejections, and
+   adjudicating them (chunk-level gold spans) is the next milestone — same
+   milestone that closes the precision gate gap.
 
 ## Eval methodology notes (auditable)
 
