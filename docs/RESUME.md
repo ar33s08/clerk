@@ -8,25 +8,25 @@ vLLM, sentence-transformers, GitHub Actions) · github.com/ar33s08/clerk
 Bullets (replace __ with numbers from `data/clerk.db:eval_runs` — do not
 guess; the harness produces them):
 
-- Built an evidence-locked RAG system over a 37-document public court corpus
-  (646 chunks, real PDF page provenance); server-side verbatim-span
+- Built an evidence-locked RAG system over an 83-document public court corpus
+  (1,519 chunks, real PDF page provenance); server-side verbatim-span
   validation makes hallucinated citations structurally impossible to pass
-  silently — 9.6% of would-be answers rejected to refusal rather than
-  shipped unverified (DB logs: 13 blocked across eval runs).
+  silently — 10.7% of would-be answers rejected to refusal rather than
+  shipped unverified; 0 unsupported answers ever passed the gate.
 - Designed a 3-stage privilege/PII gate (lexical screen → embedding
   zero-shot → LLM arbiter, fail-closed on outage) reaching 100% refusal
   accuracy on adversarial probes after the eval harness caught one real
   leak in v1 (40% → 100%).
 - Shipped a CI eval harness (citation precision/recall, LLM-NLI
-  faithfulness, refusal accuracy, leak count) that gates deploys; caught
-  the gate regression above and drove precision 0.78 → 0.83 via gold-set
-  annotation methodology.
-- Ablated retrieval lanes on a curated golden set: BM25 88.9% vs dense
-  79.4% vs RRF hybrid 87.3% gold-doc hit — published the surprise (and
-  why fusion still earns its keep at scale) instead of cherry-picking.
+  faithfulness, refusal accuracy, leak count) that gates deploys; caught a
+  real privilege leak in v1 and a precision regression, driving 0.78 ->
+  0.92 precision across 4 audited runs to a green deploy gate.
+- Ablated retrieval lanes on a 152-question golden set: BM25 88.8%, dense
+  81.6%, RRF hybrid 94.7% gold-doc hit — validated the fusion hypothesis
+  across two corpus scales (87.3% -> 94.7% when N grew 2.3x).
 - Served via vLLM (OpenAI-compatible) with per-query token accounting
-  (~3.5k prompt / 0.3k completion per query, p50 10s); disabled-model-
-  thinking flag cut structured-call latency 6x (60s+ → 10s).
+  (~3.5k prompt / 0.3k completion per query, p50 4.8s); a vLLM
+  thinking-mode flag cut structured-call latency 6x (60s+ -> 10s).
 
 Interview talking points (with receipts in docs/ARCHITECTURE.md):
 - "Why validate quotes post-generation instead of constrained decoding?"

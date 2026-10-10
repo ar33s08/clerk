@@ -63,6 +63,9 @@ _LABEL_PROMPTS: dict[str, list[str]] = {
         "In its opinion, the court analyzed whether privilege was waived by disclosure to a third party and denied the motion.",
         "OPINION OF THE COURT: The appellant asserts the statements were privileged; we disagree for the reasons stated below.",
         "The record shows the parties exchanged emails; the movant argues these are work product; this court denies summary judgment.",
+        "The work-product doctrine protects materials prepared in anticipation of litigation; we review that determination for an abuse of discretion.",
+        "A document is prepared in anticipation of litigation if it would not have existed but for the prospect of litigation; applying that standard, we deny the claim.",
+        "Section 13: The party asserting the attorney-client privilege bears the burden of establishing each element of the protection.",
     ],
 }
 _label_embs: dict[str, object] = {}

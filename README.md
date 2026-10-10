@@ -11,10 +11,11 @@ One unverifiable quote → hard refusal. Privileged material is triaged *before*
 it ever reaches the prompt. Hallucinated citations are not "discouraged by a
 prompt" — they are structurally unable to pass.
 
-> Corpus: 34 real court/admin decisions (state appellate opinions & hearing
-> officer orders, PDF-extracted with true page provenance) via the
-> CourtListener search API + 3 adversarial gate probes — all reproducible
-> from the public APIs, zero licensed data.
+> Corpus: 83 public court/admin decisions (1,519 chunks) across 7 doctrine
+> lanes, PDF-extracted with true page provenance via the CourtListener
+> search API — zero licensed data. **Eval gate: PASS** (citation
+> precision 0.92, recall 0.95, faithfulness 0.95, privileged-probe refusal
+> 1.00, privilege leaks 0 on a 157-case harness).
 
 ## Why this exists
 

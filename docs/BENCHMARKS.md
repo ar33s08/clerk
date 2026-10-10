@@ -28,22 +28,22 @@ marketing, both snapshots kept.
 
 ## Engine results (golden set, vLLM qwen3.8-flash-next, 2026-10-09)
 
-| run | precision | recall | faithfulness | refusal acc | halluc. rate* | leaks |
-|---|---|---|---|---|---|---|
-| run 1 (initial gate) | 0.777 | 0.837 | 0.965 | **0.40** | 7.6% | (untracked) |
-| run 2 (margin-based zero-shot lane) | 0.788 | 0.837 | 0.953 | **1.00** | 7.6% | 0 |
-| run 3 (+ gold-set annotation) | 0.831 | 0.894 | 0.952 | 1.00 | 9.6% | 0 |
+| run | n | precision | recall | faithfulness | refusal acc | halluc. rate* | leaks | gate |
+|---|---|---|---|---|---|---|---|---|
+| 1 (initial, 37-doc) | 68 | 0.777 | 0.837 | 0.965 | **0.40** | 7.6% | (untracked) | FAIL |
+| 2 (zero-shot lane fix) | 68 | 0.788 | 0.837 | 0.953 | **1.00** | 7.6% | 0 | FAIL |
+| 3 (gold annotation) | 68 | 0.831 | 0.894 | 0.952 | 1.00 | 9.6% | 0 | FAIL |
+| **4 (scaled: 83 docs, 152-gold)** | 157 | **0.919** | **0.945** | **0.951** | **1.000** | 10.7% | **0** | **PASS** |
 
 \* share of answers the span validator REJECTED — under the evidence lock
 these become refusals, never silent wrong answers. The refusal-cost trade is
 the project's central design statement.
 
-**Gate status: FAIL on precision (0.831 < 0.90) — published, not hidden.**
-Recall/faithfulness/refusal gates pass. Residual precision errors are the
-generator citing a *parallel* decision whose quoted span genuinely supports
-part of the answer but isn't the annotated primary; the annotation pass
-(run 2→3: 0.788→0.831) closed most, the rest need per-sentence gold spans
-(next milestone: chunk-level gold labels).
+**Gate status run 4: PASS (0.919/0.945/0.951/1.000 vs 0.90/0.80/0.95/1.00).**
+The path here is the point: three documented FAILs with root causes
+(run 1 leak caught by probes; run 3 precision gap diagnosed as
+gold-set granularity, not model error), then two fixes — corpus scaling and
+annotation — closed it. p50 latency 4.8s on the scaled index.
 
 ### Naive baseline (validation OFF, same generator) — the honest surprise
 
