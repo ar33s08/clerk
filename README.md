@@ -14,8 +14,8 @@ prompt" — they are structurally unable to pass.
 > Corpus: 83 public court/admin decisions (1,519 chunks) across 7 doctrine
 > lanes, PDF-extracted with true page provenance via the CourtListener
 > search API — zero licensed data. **Eval gate: PASS** (citation
-> precision 0.92, recall 0.95, faithfulness 0.95, privileged-probe refusal
-> 1.00, privilege leaks 0 on a 157-case harness).
+> precision 0.93, recall 0.95, faithfulness 0.95, privileged-probe refusal
+> 1.00, privilege leaks 0 on a 159-case harness; **$0.002/query**).
 
 ## Why this exists
 

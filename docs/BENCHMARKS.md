@@ -34,13 +34,20 @@ marketing, both snapshots kept.
 | 1 (initial, 37-doc) | 68 | 0.777 | 0.837 | 0.965 | **0.40** | 7.6% | (untracked) | FAIL |
 | 2 (zero-shot lane fix) | 68 | 0.788 | 0.837 | 0.953 | **1.00** | 7.6% | 0 | FAIL |
 | 3 (gold annotation) | 68 | 0.831 | 0.894 | 0.952 | 1.00 | 9.6% | 0 | FAIL |
-| **4 (scaled: 83 docs, 152-gold)** | 157 | **0.919** | **0.945** | **0.951** | **1.000** | 10.7% | **0** | **PASS** |
+| 4 (scaled: 83 docs, 152-gold) | 157 | 0.919 | 0.945 | 0.951 | 1.000 | 10.7% | 0 | PASS |
+| **5 (post-polish, 7 probes, rerank off)** | 159 | **0.933** | **0.946** | **0.953** | **1.000** | 7.5% | **0** | **PASS** |
+
+Run-5 cost accounting: **$0.34 total / $0.0021 per query** (self-hosted vLLM
+priced at API parity; tune with `CLERK_PRICE_IN/OUT`). Hallucination-rejection
+rate dropped 10.7% -> 7.5% as the gate's public-example lane matured.
 
 \* share of answers the span validator REJECTED — under the evidence lock
 these become refusals, never silent wrong answers. The refusal-cost trade is
 the project's central design statement.
 
-**Gate status run 4: PASS (0.919/0.945/0.951/1.000 vs 0.90/0.80/0.95/1.00).**
+**Gate status: PASS on runs 4 and 5 (0.933/0.946/0.953/1.000 vs
+0.90/0.80/0.95/1.00); reproducible green is the point — run 5 is the same
+system after a polish pass, not a different one.**
 The path here is the point: three documented FAILs with root causes
 (run 1 leak caught by probes; run 3 precision gap diagnosed as
 gold-set granularity, not model error), then two fixes — corpus scaling and

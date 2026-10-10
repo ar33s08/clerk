@@ -24,9 +24,12 @@ guess; the harness produces them):
 - Ablated retrieval lanes on a 152-question golden set: BM25 88.8%, dense
   81.6%, RRF hybrid 94.7% gold-doc hit — validated the fusion hypothesis
   across two corpus scales (87.3% -> 94.7% when N grew 2.3x).
-- Served via vLLM (OpenAI-compatible) with per-query token accounting
-  (~3.5k prompt / 0.3k completion per query, p50 4.8s); a vLLM
+- Served via vLLM (OpenAI-compatible) with per-query cost accounting:
+  $0.0021/query across a 159-case harness ($0.34 total), p50 6.2s; a vLLM
   thinking-mode flag cut structured-call latency 6x (60s+ -> 10s).
+- Added a DB-migrated cost ledger, opt-in LLM rerank lane, 7-case
+  adversarial probe suite (7/7 refused, 0 leaks), and lifespan-managed API
+  warmup across 2 reproducible green gate runs.
 
 Interview talking points (with receipts in docs/ARCHITECTURE.md):
 - "Why validate quotes post-generation instead of constrained decoding?"
