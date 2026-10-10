@@ -1,0 +1,40 @@
+[
+ {
+  "question": "What was the final judgment rendered by the Court of Appeals, and on what date was the opinion released and journalized?",
+  "answer": "In the case of Best Motors, L.L.C. v. Kaba, the Court of Appeals rendered a judgment of AFFIRMED, and the opinion was released and journalized on February 27, 2025. [be35f7bf p.1] In the case of Cleveland v. Graham, the Court of Appeals rendered a judgment of DISMISSED, and the opinion was released and journalized on February 6, 2020. [ec4e9b61 p.1]",
+  "citations": [
+   {
+    "doc_id": "be35f7bfe42d2aae",
+    "page": 1,
+    "quote": "JUDGMENT: AFFIRMED RELEASED AND JOURNALIZED: February 27, 2025",
+    "sentence": "In the case of Best Motors, L.L.C. v. Kaba, the Court of Appeals rendered a judgment of AFFIRMED, and the opinion was released and journalized on February 27, 2025."
+   },
+   {
+    "doc_id": "ec4e9b61900aff3d",
+    "page": 1,
+    "quote": "JUDGMENT: DISMISSED RELEASED AND JOURNALIZED: February 6, 2020",
+    "sentence": "In the case of Cleveland v. Graham, the Court of Appeals rendered a judgment of DISMISSED, and the opinion was released and journalized on February 6, 2020."
+   }
+  ],
+  "latency_ms": 19120
+ },
+ {
+  "question": "What must a party show for evidence to qualify as attorney work product?",
+  "answer": "The two primary elements required for a document to qualify as attorney work product are that it must be a product of the attorney's mental processes and made in anticipation of litigation. [99cc6f5a p.14] When seeking discovery of tangible work product materials, the requesting party must demonstrate good cause by showing the material is directly at issue, the need is compelling, and the evidence is unavailable elsewhere. [8f0f1182 p.15]",
+  "citations": [
+   {
+    "doc_id": "99cc6f5a18018112",
+    "page": 14,
+    "quote": "1) the do cument must be a product of the respondent\u2019s attorney\u2019s mental processes, and 2) must have been made in anticipation of l itigation.",
+    "sentence": "The two primary elements required for a document to qualify as attorney work product are that it must be a product of the attorney's mental processes and made in anticipation of litigation."
+   },
+   {
+    "doc_id": "8f0f1182105eadf9",
+    "page": 15,
+    "quote": "The good-cause requirement is met only when the work product \u201cis directly at issue in the case, the need for the information is compelling, and the evidence cannot be obtained elsewhere.\u201d",
+    "sentence": "When seeking discovery of tangible work product materials, the requesting party must demonstrate good cause by showing the material is directly at issue, the need is compelling, and the evidence is unavailable elsewhere."
+   }
+  ],
+  "latency_ms": 14473
+ }
+]

@@ -7,8 +7,9 @@ it never hand-edits numbers.
 
 Corpus at eval time (runs 1-3): 37 documents (34 public court opinions/admin decisions
 with real page provenance + 3 synthetic gate probes), 646 chunks, golden set
-of 63 curated doc-QA questions + 5 adversarial probes (3 privileged/PII,
-2 no-evidence). Repro: `scripts/seed_probes.py`, `clerk.eval --generate`.
+of 152 curated doc-QA questions + 7 adversarial probes (5 privileged/PII,
+2 no-evidence; synthetic, fictional text only). Repro:
+`scripts/seed_probes.py`, `clerk.eval --generate`.
 
 ## Retrieval ablation (gold-doc hit in fused top set)
 
