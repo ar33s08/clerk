@@ -5,7 +5,7 @@ All numbers below are produced by `python -m clerk.eval --gate` against
 metric JSON per run). Reproduce: one command. This file only reports runs;
 it never hand-edits numbers.
 
-Corpus at eval time: 37 documents (34 public court opinions/admin decisions
+Corpus at eval time (runs 1-3): 37 documents (34 public court opinions/admin decisions
 with real page provenance + 3 synthetic gate probes), 646 chunks, golden set
 of 63 curated doc-QA questions + 5 adversarial probes (3 privileged/PII,
 2 no-evidence). Repro: `scripts/seed_probes.py`, `clerk.eval --generate`.
@@ -85,3 +85,9 @@ composition-sensitive. Two takeaways we actually ship with:
   domain breadth is privilege-procedure-heavy by design.
 - Page provenance is real (PDF extraction); the word-band fallback applies
   only to page-less .txt uploads.
+
+Corpus since scaled to **83 documents / 1,519 chunks** across 7 doctrine
+lanes (privilege, work product, summary judgment, spoliation sanctions,
+qualified immunity, Daubert, contract interpretation); golden-set and
+ablation re-runs in progress against the larger index — tables above
+still describe the 37-doc corpus until `eval_run4` lands.
