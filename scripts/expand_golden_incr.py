@@ -38,7 +38,7 @@ def main():
     n = 0
     with open(gold_path + ".candidates", "a") as f:
         for i, d in enumerate(new_docs):
-            meta = store.doc_meta(d) or {}
+            meta = store.doc_meta(d["doc_id"]) or {}
             try:
                 out = llm.chat_json([
                     {"role": "system", "content":
@@ -49,7 +49,7 @@ def main():
                     {"role": "user", "content": d["text"][:6000]},
                 ], max_tokens=1200)
                 for q in out.get("questions", [])[:a.per_doc]:
-                    f.write(json.dumps({"question": q, "gold_doc_ids": [d],
+                    f.write(json.dumps({"question": q, "gold_doc_ids": [d["doc_id"]],
                                         "gold_chunk_ids": [d["chunk_id"]],
                                         "kind": "qa"}) + "\n")
                     n += 1

@@ -1,12 +1,1 @@
 49 unrepresented docs to annotate
-Traceback (most recent call last):
-  File "/Users/areesmanesia/clerk/scripts/expand_golden_incr.py", line 64, in <module>
-    main()
-    ~~~~^^
-  File "/Users/areesmanesia/clerk/scripts/expand_golden_incr.py", line 41, in main
-    meta = store.doc_meta(d) or {}
-           ~~~~~~~~~~~~~~^^^
-  File "/Users/areesmanesia/clerk/clerk/store.py", line 140, in doc_meta
-    r = c.execute("SELECT * FROM documents WHERE doc_id=?", (doc_id,)).fetchone()
-        ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-sqlite3.ProgrammingError: Error binding parameter 1: type 'dict' is not supported
