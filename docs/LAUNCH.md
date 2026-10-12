@@ -131,6 +131,26 @@ before a customer finds out it doesn't.
 
 #ForwardDeployed #AIEngineering #LLMOps
 
+## NVIDIA/DGX-Spark-angle post (week 3, audience: NVIDIA technical marketing, devrel, AI infra)
+
+I run a production-grade RAG service entirely on a DGX Spark. CLERK
+(github.com/ar33s08/clerk): evidence-locked QA with a CI eval gate, served through vLLM
+on GB10 at $0.002/query, p50 ~6s.
+
+What the Spark side taught me that a hosted-API portfolio can't:
+- A hybrid-thinking server flag was silently adding 60s+ to every structured call.
+  Diagnosing that is chat_template_kwargs archaeology in vLLM configs, not prompt
+  engineering. p50 60s -> 6s.
+- Local NVFP4 serving changes your eval math: no per-token panic, so I could run a
+  159-case adversarial harness repeatedly while the gate failed 3x toward PASS.
+- The whole loop — ingestion, embedding, gate, evals — runs on deskside hardware on my
+  tailnet. That's the "agents at your desk" pitch with a reliability-engineering twist.
+
+The Spark playbooks show what to run; this shows what to build on top: provenance,
+refusal policy, and an eval gate you can reproduce on one box.
+
+#DGXSpark #NVIDIA #AIEngineering
+
 ## Reddit r/MachineLearning (Learning/Project showcase angle)
 
 Title: I built a legal-RAG system where hallucinated citations can't pass silently — eval gate failed 3x before passing, all runs published
