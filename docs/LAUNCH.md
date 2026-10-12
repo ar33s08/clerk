@@ -1,5 +1,20 @@
 # CLERK launch posts (verified numbers, 2026-10-10)
 
+## POSITIONING (owner decision 2026-10-10): NOT a legal-tech story
+Target roles = AI engineering, FDE, AI PM, technical marketing / devrel,
+entry-level AI infra. Legal is the torture-test domain, not the identity:
+"evidence-locked RAG + eval gate + vLLM on a DGX Spark" is the product story;
+the corpus is just the hardest data I could get for free. Angle per audience:
+- AI eng / LLM-ops roles  → the eval gate, span validation, ablations
+- FDE roles              → "deploy a grounded LLM where wrong answers are
+                            unacceptable" IS the FDE job description
+- AI PM roles            → cost-per-query, refusal policy as product surface,
+                            gate thresholds = shipped product decisions
+- Tech marketing / NVIDIA-style → "I ran vLLM + agent workflows on a DGX
+                            Spark and published honest benchmarks" is literally
+                            the content that role produces
+Never headline "legal AI" — headline the reliability engineering.
+
 Repo: https://github.com/ar33s08/clerk · CI green · eval gate: PASS (2 consecutive runs)
 
 Facts all posts must keep true:
@@ -21,9 +36,10 @@ beats ("better than X"), or imply the corpus is licensed legal data.
 
 I built an AI system where a wrong answer is structurally impossible to ship silently.
 
-CLERK (github.com/ar33s08/clerk) answers questions over US court decisions — the kind of
-retrieval task where a single hallucinated citation would be a malpractice event, not a bug
-report. The difference between it and a demo RAG repo is what happens after generation:
+CLERK (github.com/ar33s08/clerk) answers questions over a corpus of US court
+decisions — chosen because adversarial, citation-hungry text is the hardest thing to
+build against; the machinery is domain-agnostic. The difference between it and a demo
+RAG repo is what happens after generation:
 
 • Every answer must quote a verbatim span of a source document. The server validates each
   quote byte-for-byte against the chunk it claims. One mismatch → hard refusal. Not a
@@ -92,6 +108,28 @@ and blocking — 7.5% of would-be answers get refused to stay at zero.
 Stack: FastAPI, vLLM (DGX Spark), BM25+dense+RRF, CI eval gating. One engineer.
 
 ---
+
+## FDE-angle post (week 2, audience: Forward Deployed Engineering / AI Solutions)
+
+The FDE job is "make an LLM safe to point at a customer's real data." I built that
+problem from the wrong end to see what breaks. CLERK (github.com/ar33s08/clerk):
+
+- Deployment is gated by evals, not vibes: citation P/R, NLI faithfulness, adversarial
+  probe refusal, zero-leak assertions. CI blocks deploys below threshold. Gate failed
+  3x in dev — every FAIL published, because "what did it fail at and why" is the actual
+  deliverable.
+- Fail-closed by default: when the safety classifier's backend is down, content
+  quarantines to human review. In customer environments, the graceful degradation path
+  is a design decision you defend in a meeting, not a try/except.
+- Runs on a DGX Spark via vLLM at $0.002/query. A thinking-mode flag was quietly adding
+  60s to every structured call; latency p50 went 60s+ -> 6s. That kind of
+  server-config archaeology is most of real LLM ops.
+
+If your "RAG" story ends at the vector search demo, this repo is the other 80%:
+provenance, refusal policy, cost accounting, and the eval loop that proves it works
+before a customer finds out it doesn't.
+
+#ForwardDeployed #AIEngineering #LLMOps
 
 ## Reddit r/MachineLearning (Learning/Project showcase angle)
 
